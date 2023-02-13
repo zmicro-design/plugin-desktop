@@ -54,6 +54,7 @@ desktop::install() {
   export DESKTOP_USER_BIN_DIR="$(os::usr_bin_dir)"
   export DESKTOP_USER_LIB_DIR="$(os::usr_lib_dir)"
   export DESKTOP_TMP_DIR="$(os::tmp_dir)/desktop-${name}"
+  export DESKTOP_CACHE_DIR="$HOME/.cache/zmicro/desktop"
   export DESKTOP_DIR="$desktop_path"
   if [ ! -d "$DESKTOP_TMP_DIR" ]; then
     mkdir -p $DESKTOP_TMP_DIR
