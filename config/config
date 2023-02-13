@@ -1,0 +1,9 @@
+export PLUGIN_DESKTOP_NAME=desktop
+
+export PLUGIN_DESKTOP_DATA=$(plugin::get_app_data_path $PLUGIN_DESKTOP_NAME)
+export PLUGIN_DESKTOP_LOGS=$(plugin::get_app_logs_path $PLUGIN_DESKTOP_NAME)
+export PLUGIN_DESKTOP_CONFIG=$(plugin::get_app_configs_path $PLUGIN_DESKTOP_NAME)/config
+
+
+export DESKTOPS_PATH=$ZMICRO_PLUGINS_PATH/desktop/desktops
+export DESKTOPS_REPO_PREFIX=https://github.com/zmicro-design/desktop-

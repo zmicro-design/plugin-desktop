@@ -1,0 +1,6 @@
+data/
+logs/
+log/
+*_tmp
+*.swp
+desktops/

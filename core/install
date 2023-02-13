@@ -1,0 +1,76 @@
+#!/bin/bash
+
+# desktop::install get the system os
+desktop::install() {
+  local name=$1
+  local version=$2
+  if [ -z "$name" ]; then
+    log::error "[desktop::install] name is required"
+    return 1
+  fi
+
+  if [ -z "$version" ]; then
+    version="master"
+  elif [ "$version" = "latest" ]; then
+    version="master"
+  fi
+
+  local desktop_path=$DESKTOPS_PATH/$name
+  local repository_url=${DESKTOPS_REPO_PREFIX}${name}
+  local branch=$version
+  git::clone $desktop_path $repository_url $branch
+  if [ "$?" != "0" ]; then
+    log::error "[desktop::install] failed to download repository($repository_url)"
+    return 1
+  fi
+
+  # 1. Before Run Action
+  # 1.1 Load Config
+  log::debug "[$(timestamp)][desktop::install][name: $name] load config ..."
+  desktop::load_config $name
+
+  # 1.2 Load Core
+  log::debug "[$(timestamp)][desktop::install][name: $name] load core ..."
+  desktop::load_core $name
+
+  # 1.3 Inject environment
+  log::debug "[$(timestamp)][desktop::install][name: $name] load mod ..."
+  desktop::load_mod $name
+
+  log::debug "[$(timestamp)][desktop::install][name: $name] inject environment ..."
+  export DESKTOP_NAME=$name
+  export DESKTOP_VERSION=$VERSION
+  export DESKTOP_DESCRIPTION=$DESCRIPTION
+  export DESKTOP_OS=$(os::os_name)
+  export DESKTOP_OS_ARCH="$(os::arch)"
+  export DESKTOP_OS_KERNEL="$(os::kernel)"
+  export DESKTOP_OS_PLATFORM="$(os::platform)"
+  export DESKTOP_OS_DISTRIBUTION="$(os::distribution)"
+  export DESKTOP_USER_BIN_DIR="$(os::usr_bin_dir)"
+  export DESKTOP_USER_LIB_DIR="$(os::usr_lib_dir)"
+  export DESKTOP_TMP_DIR="$(os::tmp_dir)/desktop-${name}"
+  export DESKTOP_DIR="$desktop_path"
+  if [ ! -d "$DESKTOP_TMP_DIR" ]; then
+    mkdir -p $DESKTOP_TMP_DIR
+  fi
+
+  local desktop_action_path=$desktop_path/install
+  if [ ! -f "$desktop_action_path" ]; then
+    log::error "[$(timestamp)][desktop::install] desktop(${name}) found, but action(${action}) is not available"
+    return 1
+  fi
+
+  log::info "[$(timestamp)][desktop::install] $name($version) ..."
+  # @FIX donot pass version
+  # $desktop_action_path $version $args
+  $desktop_action_path $args
+  if [ "$?" != "0" ]; then
+    log::error "[$(timestamp)][desktop::install] failed to install $name."
+    return 1
+  fi
+
+  local version=$(desktop::version $name)
+  log::success "[$(timestamp)][desktop::install][done] $name($version) ..."
+}
+
+export -f desktop::install

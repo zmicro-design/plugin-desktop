@@ -1,0 +1,41 @@
+#!/bin/bash
+
+name() {
+  local version=$(plugin::get_version $PLUGIN_DESKTOP_NAME)
+  echo "desktop ($(color::success $version))"
+}
+
+description() {
+  echo "Desktop Application Management Plugin"
+}
+
+usage() {
+  echo "Usage:"
+  echo "  zmicro desktop install <name>          - Install a desktop app"
+  echo "  zmicro desktop create <name>           - Create a desktop app"
+  echo "  zmicro desktop remove <name>           - Remove a desktop app"
+  echo "  zmicro desktop list <name>             - List all desktop apps"
+  echo "  zmicro desktop info <name>             - Inspect a desktop app"
+  echo "  zmicro desktop help                    - Show help"
+}
+
+example() {
+  echo "Example:"
+  echo "  zmicro desktop install vscode"
+}
+
+core() {
+  name
+  echo ""
+  description
+  echo ""
+  usage
+  echo ""
+  example
+}
+
+run() {
+  core $@
+}
+
+run $@

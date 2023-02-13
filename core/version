@@ -1,0 +1,21 @@
+#!/bin/bash
+
+desktop::version() {
+  local name=$1
+  if [ -z "$name" ]; then
+    log::error "[$(timestamp)][desktop::version] name is required"
+    exit 1
+  fi
+
+  # @TODO
+  if [ ! -f "$(desktop::get_mod_path $name)" ]; then
+    echo "-"
+    return
+  fi
+
+  desktop::load_mod $name
+  
+  echo $VERSION
+}
+
+export -f desktop::version

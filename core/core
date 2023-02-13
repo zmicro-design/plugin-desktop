@@ -1,0 +1,32 @@
+#!/bin/bash
+
+desktop::load_config() {
+  local name=$1
+  local config_path="$DESKTOPS_PATH/$name/config"
+  
+  if [ -f $config_path ]; then
+    config::load_file $config_path
+  fi
+}
+
+desktop::load_core() {
+  local name=$1
+  local config_path="$DESKTOPS_PATH/$name/core"
+  
+  if [ -f $config_path ]; then
+    config::load_file $config_path
+  fi
+}
+
+desktop::load_mod() {
+  local name=$1
+  local config_path="$DESKTOPS_PATH/$name/mod"
+  
+  if [ -f $config_path ]; then
+    config::load_file $config_path
+  fi
+}
+
+export -f desktop::load_config
+export -f desktop::load_core
+export -f desktop::load_mod
