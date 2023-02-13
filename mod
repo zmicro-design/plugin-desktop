@@ -1,5 +1,5 @@
 PLUGIN_NAME=desktop
-PLUGIN_VERSION=v1.0.2
+PLUGIN_VERSION=v1.0.3
 PLUGIN_DESCRIPTION="Desktop Application Management Plugin"
 
 DEPENDENCIES=(
