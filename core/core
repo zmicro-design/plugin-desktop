@@ -27,6 +27,12 @@ desktop::load_mod() {
   fi
 }
 
+desktop::get_mod_path() {
+  echo "$DESKTOPS_PATH/$name/mod"
+}
+
 export -f desktop::load_config
 export -f desktop::load_core
 export -f desktop::load_mod
+
+export -f desktop::get_mod_path
