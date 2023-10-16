@@ -23,6 +23,16 @@ desktop::install() {
     return 1
   fi
 
+  if [ ! -r "$DESKTOPS_PATH" ]; then
+    sudo chown $USER $DESKTOPS_PATH
+  fi
+
+  if [ -d "$desktop_path" ]; then
+    if [ ! -r "$desktop_path/.git/FETCH_HEAD" ] || [ ! -w "$desktop_path/.git/FETCH_HEAD" ]; then 
+      sudo chown -R $USER $desktop_path
+    fi
+  fi
+
   git::clone $desktop_path $repository_url $branch
   if [ "$?" != "0" ]; then
     log::error "[$(timestamp)] failed to download repository($repository_url)"
